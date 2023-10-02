@@ -15,7 +15,7 @@
         <div class="container d-flex justify-content-center">
 
 
-            <form action="/admin/categories/create" method="post" class="d-flex flex-column justify-content-center w-50 gap-2 mt-5 mb-5">
+            <form action="/admin/categories/create" method="post" enctype="multipart/form-data" class="d-flex flex-column justify-content-center w-50 gap-2 mt-5 mb-5">
                 <div class="row g-2">
                     <div class="col-md">
                         <div class="form-floating">
@@ -23,6 +23,13 @@
                             <label for="name">Название</label>
                             <?php if ($session->has('name')) { ?>
                                 <div class="invalid-feedback"><?= $session->getFlash('name')[0] ?></div>
+                            <?php } ?>
+                        </div>
+                        <div class="mt-2">
+                            <label for="preview" class="form-label">Превью</label>
+                            <input type="file" name="preview" class="form-control <?= $session->has('preview') ? 'is-invalid' : '' ?>" id="preview">
+                            <?php if ($session->has('preview')) { ?>
+                                <div class="invalid-feedback"><?= $session->getFlash('preview')[0] ?></div>
                             <?php } ?>
                         </div>
                     </div>

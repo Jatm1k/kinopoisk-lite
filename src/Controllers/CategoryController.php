@@ -11,7 +11,9 @@ class CategoryController extends Controller
 
     public function index(): void
     {
-        $this->view('categories');
+        $this->view('categories', [
+            'categories' => $this->service()->all(),
+        ]);
     }
 
     private function service(): CategoryService
@@ -32,6 +34,7 @@ class CategoryController extends Controller
     {
         $validation = $this->request()->validate([
             'name' => ['required', 'max:255'],
+            'preview' => ['required'],
         ]);
 
         if (! $validation) {
@@ -41,7 +44,10 @@ class CategoryController extends Controller
             $this->redirect('/admin/categories/create');
         }
 
-        $this->service()->store($this->request()->input('name'));
+        $this->service()->store(
+            $this->request()->input('name'),
+            $this->request()->file('preview'),
+        );
 
         $this->redirect('/admin');
     }
@@ -73,7 +79,11 @@ class CategoryController extends Controller
             $this->redirect("/admin/categories/edit?id={$this->request()->input('id')}");
         }
 
-        $this->service()->update($this->request()->input('name'), $this->request()->input('id'));
+        $this->service()->update(
+            $this->request()->input('name'),
+            $this->request()->file('preview'),
+            $this->request()->input('id')
+        );
 
         $this->redirect('/admin');
     }
